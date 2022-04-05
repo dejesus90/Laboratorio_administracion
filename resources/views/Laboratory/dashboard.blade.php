@@ -28,7 +28,7 @@
                     <td>{{ $usuarios->cargo }}</td>
                     <td>{{ $usuarios->cedula }}</td>
                     <td style="text-align:center">
-                        <button class="btn btn-outline-danger btn-sm">Eliminar</button>
+                        <button class="btn btn-outline-danger btn-sm delete cursor" data-id="{{$usuarios->id}}">Eliminar</button>
                     </td>
                 </tr>
                @endforeach
@@ -142,6 +142,38 @@ window.onload = function() {
             }
         });
     });
+    $(".delete").click(function(){
+        let ideliminar = $(this).attr('data-id');
+        console.log(ideliminar);
+        Swal.fire({
+            // title: 'Are you sure?',
+            text: "Eliminar Usuario del sistema?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    // la URL para la petición
+                    url : '/eliminarUsuario',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data : {id:ideliminar} ,
+                    type : 'POST',
+                    success : function(json) {
+                        console.log(json);
+                        // $("#btn-save").attr('disabled',false);
+                        // $("#modalagregar").modal('hide');
+                        location.reload();
+                    }
+                }); 
+            }
+        })
+    })
     function mensajealerta(texto,titulo,tipo) {
         Swal.fire({
             title: titulo,

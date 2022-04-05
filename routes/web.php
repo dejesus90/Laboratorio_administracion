@@ -74,6 +74,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/download/{tipo}', [adminController::class, 'download']);
 
     Route::post('/registrarUsuario', [adminController::class, 'registrarUsuario']);
+    Route::post('/eliminarUsuario', [adminController::class, 'eliminarUsuario']);
     
 });
 Route::group(['middleware' => 'paciente'], function () {

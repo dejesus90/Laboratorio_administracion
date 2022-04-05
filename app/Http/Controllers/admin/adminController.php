@@ -303,12 +303,27 @@ class adminController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'usuarioinfo_id' => $datauser->id,
-            'usuarioinfo_id' => $datauser->id,
+            // 'usuarioinfo_id' => $datauser->id,
             'rol_id'=> 2,
             'activo'    => 1,
         ]);
         return json_encode([
             "estatus" => 'ok',
+        ]);
+    }
+    public function eliminarUsuario(Request $request)
+    {
+        $infouser = modelosLab\Usuarioinfo::find($request->id);
+        $infouser->delete(); 
+
+        $user = User::where('usuarioinfo_id',$request->id)->delete();
+        // $infouser->delete(); 
+
+        # code...
+        return json_encode([
+            "estatus" => 'ok',
+            "data"=> $infouser,
+            "user"=> $user
         ]);
     }
     
