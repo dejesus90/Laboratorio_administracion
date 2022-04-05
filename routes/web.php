@@ -58,7 +58,7 @@ Route::group(['middleware' => 'root'], function () {
     
 });
 Route::group(['middleware' => 'admin'], function () {
-    Route::get('/dashboard', [adminController::class, 'index']);
+    Route::get('/dashboard', [adminController::class, 'muestras']);
     Route::get('/usuarios', [adminController::class, 'index']);
     Route::get('/pacientes', [adminController::class, 'pacientes']);
     Route::get('/analisis', [adminController::class, 'analisis']);
@@ -72,6 +72,8 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/publicarMuestra', [adminController::class, 'publicarMuestra']);
     // Route::get('download', [adminController::class,'download']);
     Route::get('/download/{tipo}', [adminController::class, 'download']);
+
+    Route::post('/registrarUsuario', [adminController::class, 'registrarUsuario']);
     
 });
 Route::group(['middleware' => 'paciente'], function () {

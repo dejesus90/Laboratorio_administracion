@@ -16,33 +16,11 @@ class adminController extends Controller
     {
         // dashborad administrador
         $infouser = modelosLab\Usuarioinfo::where('id',Auth::user()->usuarioinfo_id)->first();
-        $muestrasLab = modelosLab\Muestras::with('estadomuestra','paciente','examen')
-        ->where('laboratorio_id',$infouser->laboratorio__id)->get();
         
-        $enlab = 0;
-        $enanalisis = 0;
-        $publicados = 0;
-        foreach ($muestrasLab as $value) {
-            # code...
-            
-            switch ($value->estadomuestra->id) {
-                case 1: $enlab ++; break;
-                case 2: $enanalisis ++; break;
-                case 3: $publicados ++; break;
-            }
-        }
-        $pacientesLista = DB::table('pacientes')
-            ->rightJoin('paciente_laboratorio', 'pacientes.id', '=', 'paciente_laboratorio.paciente_id')
-            ->where('paciente_laboratorio.laboratorio_id','=',$infouser->laboratorio__id)
-            ->select('pacientes.*')
-            ->get();
-        $detalle = [
-            'laboratorio' => $enlab,
-            'analisis'  => $enanalisis,
-            'publicados' => $publicados,
-            'pacientes' => count($pacientesLista)
-        ];
-        return view('Laboratory.dashboard',['mueestrasresumen'=>$detalle]);
+        $usuariosLab = modelosLab\Usuarioinfo::where([['laboratorio__id',$infouser->laboratorio__id],['tipousuario_id',3]])->get();
+        // dd($usuariosLab);
+        $detalle = $this->filtroEncabezado();
+        return view('Laboratory.dashboard',['mueestrasresumen'=>$detalle,'usuariosLab'=>$usuariosLab]);
     }
     public function pacientes()
     {
@@ -177,7 +155,7 @@ class adminController extends Controller
             "estatus" => 'ok',
         ]);
     }
-    public function muestras($tipo)
+    public function muestras($tipo = 1)
     {
         // dd(Auth::user()->infoUser());
         $filtro = 1;
@@ -198,14 +176,6 @@ class adminController extends Controller
         $muestrasLab = modelosLab\Muestras::with('estadomuestra','paciente','examen')
         ->where([['laboratorio_id',$infouser->laboratorio__id],['estado_id',$filtro]])->get();
         $estados =  modelosLab\Estadomuestras::get();
-        // $pacientesLab = modelosLab\Pacientes::orderBy('nombre1')->get();
-        // $pacientesLab = DB::table('pacientes')
-        //     ->rightJoin('paciente_laboratorio', 'pacientes.id', '=', 'paciente_laboratorio.paciente_id')
-        //     ->where('paciente_laboratorio.laboratorio_id','=',$infouser->laboratorio__id)
-        //     ->select('pacientes.*')
-        //     ->get();
-        // $analisisLab = modelosLab\Examenes::orderBy('nombre')
-        // ->where('laboratorio_id',$infouser->laboratorio__id)->get();
         $detalle = $this->filtroEncabezado();
         return view('Laboratory.muestras',["muestras"=>$muestrasLab,"estados" => $estados,'mueestrasresumen'=>$detalle]);
     }
@@ -257,7 +227,8 @@ class adminController extends Controller
             'analisis'  => $enanalisis,
             'examenes'  => $analisisLab,
             'publicados' => $publicados,
-            'pacientes' => count($pacientesLista)
+            'pacientes' => count($pacientesLista),
+            'usuario'  => $infouser->tipousuario_id,
         ];
         return $detalle;
     }
@@ -310,6 +281,35 @@ class adminController extends Controller
         // return $tipo;
         # code...
         // return Storage::download($request->filePath);
+    }
+    public function registrarUsuario(Request $request)
+    {
+        # code...
+        $infouser = modelosLab\Usuarioinfo::where('id',Auth::user()->usuarioinfo_id)->first();
+        $datauser = modelosLab\Usuarioinfo::create([
+            'nombre' => $request->nombre,
+            'apellidos' => $request->apellidos,
+            'cedula' => $request->cedula,
+            'cargo' => $request->cargo,
+            'email' => $request->email,
+            'laboratorio__id' => $infouser->laboratorio__id,
+            'rol_id' => 2,
+            'tipousuario_id' => 3,
+            'activo'    => 1,
+        ]);
+
+        User::create([
+            'name' => $request->nombre,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'usuarioinfo_id' => $datauser->id,
+            'usuarioinfo_id' => $datauser->id,
+            'rol_id'=> 2,
+            'activo'    => 1,
+        ]);
+        return json_encode([
+            "estatus" => 'ok',
+        ]);
     }
     
     

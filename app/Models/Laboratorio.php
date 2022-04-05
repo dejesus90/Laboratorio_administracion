@@ -21,4 +21,8 @@ class Laboratorio extends Model
     {
         return $this->hasMany(Laboratoriosrechazados::class , 'id_laboratorio');
     }
+    public function usuariosLab()
+    {
+        return $this->hasMany(Usuarioinfo::class , 'laboratorio__id');
+    }
 }

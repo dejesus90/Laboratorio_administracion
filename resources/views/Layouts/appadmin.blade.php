@@ -82,22 +82,26 @@
                         </a>
                     </li>
                     <li class="heading">Menu</li>
+                    @if($mueestrasresumen['usuario'] == 2)
                     <li>
                         <a href="/usuarios">
                             <i class="sidebar-item-icon fa fa-user-o"></i>
                             <span class="nav-label">Usarios</span>
                         </a>
                     </li>
+                    @endif
                     <li>
                         <a href="/pacientes"><i class="sidebar-item-icon fa fa-address-card-o"></i>
                             <span class="nav-label">Pacientes</span>
                         </a>
                     </li>
+                    @if($mueestrasresumen['usuario'] == 2)
                     <li>
                         <a href="/analisis"><i class="sidebar-item-icon fa fa-flask"></i>
                             <span class="nav-label">Examenes</span>
                         </a>
                     </li>
+                    @endif
                     <li>
                         <a href="/muestras/laboratorio"><i class="sidebar-item-icon fa fa-hourglass-o"></i>
                             <span class="nav-label">En Laboratorio</span>
