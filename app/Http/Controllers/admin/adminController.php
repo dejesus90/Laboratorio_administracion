@@ -38,8 +38,10 @@ class adminController extends Controller
         $detalle = $this->filtroEncabezado();
         return view('Laboratory.paciente',["pacientes"=>$pacientesLista,'mueestrasresumen'=>$detalle]);
     }
+
+
     public function registrarPaciente(Request $request)
-    {
+    { 
         # code...
         $datareq = $request->datas;
         $pacienteid = $datareq['nuevo'];
@@ -79,10 +81,12 @@ class adminController extends Controller
         // ]);
 
         $infouser = modelosLab\Usuarioinfo::where('id',Auth::user()->usuarioinfo_id)->first();
+        if ($datareq['nuevo'] == 0){
         modelosLab\PacienteLaboratorio::create([
             'paciente_id' => $pacienteid,
             'laboratorio_id' => $infouser->laboratorio__id,
         ]);
+             }
 
         modelosLab\Muestras::create([
             'codigo_muestra' => $this->generateRandomString(8), //$datareq['codigo'],
@@ -112,7 +116,7 @@ class adminController extends Controller
         $infouser = modelosLab\Usuarioinfo::where('id',Auth::user()->usuarioinfo_id)->first();
         $muestrasLab = modelosLab\Muestras::with('estadomuestra','paciente','examen')
         ->where('laboratorio_id',$infouser->laboratorio__id)->get();
-        
+    
         $enlab = 0;
         $enanalisis = 0;
         $publicados = 0;
@@ -138,7 +142,11 @@ class adminController extends Controller
         ];
         $analisisLab = modelosLab\Examenes::orderBy('nombre')
         ->where('laboratorio_id',$infouser->laboratorio__id)->get();
+   
+        $detalle = $this->filtroEncabezado();
+        
         return view('Laboratory.examenes',["analisis"=>$analisisLab,'mueestrasresumen'=>$detalle]);
+
     }
     public function registrarExamen(Request $request)
     {
