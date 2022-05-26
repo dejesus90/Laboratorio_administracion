@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Paises;
 use App\Models as modelosLab;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class adminController extends Controller
 {
@@ -33,6 +34,7 @@ class adminController extends Controller
         $pacientesLista = DB::table('pacientes')
             ->rightJoin('paciente_laboratorio', 'pacientes.id', '=', 'paciente_laboratorio.paciente_id')
             ->where('paciente_laboratorio.laboratorio_id','=',$infouser->laboratorio__id)
+            ->where('pacientes.deleted_at','=',null)
             ->select('pacientes.*')
             ->get();
         
@@ -180,14 +182,15 @@ class adminController extends Controller
                 break;
         }
         # code...
-        $infouser = modelosLab\Usuarioinfo::where('id',Auth::user()->usuarioinfo_id)->first();
+        $infouser = modelosLab\Usuarioinfo::where('id',Auth::user()->usuarioinfo_id)->with('lab')->first();
         
         $muestrasLab = modelosLab\Muestras::with('estadomuestra','paciente','examen')
         ->where([['laboratorio_id',$infouser->laboratorio__id],['estado_id',$filtro]])->get();
         $estados =  modelosLab\Estadomuestras::get();
         $detalle = $this->filtroEncabezado();
-        dd($infouser);
-        return view('Laboratory.muestras',["muestras"=>$muestrasLab,"estados" => $estados,'mueestrasresumen'=>$detalle]);
+        // dd($infouser);
+        return view('Laboratory.muestras',["muestras"=>$muestrasLab,
+        "estados" => $estados,'mueestrasresumen'=>$detalle]);
     }
     public function registrarMuestra(Request $request)
     {
@@ -209,7 +212,8 @@ class adminController extends Controller
     public function filtroEncabezado()
     {
         # code...
-        $infouser = modelosLab\Usuarioinfo::where('id',Auth::user()->usuarioinfo_id)->first();
+        // $infouser = modelosLab\Usuarioinfo::where('id',Auth::user()->usuarioinfo_id)->first();
+        $infouser = modelosLab\Usuarioinfo::where('id',Auth::user()->usuarioinfo_id)->with('lab')->first();
         $muestrasLab = modelosLab\Muestras::with('estadomuestra','paciente','examen')
         ->where('laboratorio_id',$infouser->laboratorio__id)->get();
         
@@ -239,6 +243,7 @@ class adminController extends Controller
             'publicados' => $publicados,
             'pacientes' => count($pacientesLista),
             'usuario'  => $infouser->tipousuario_id,
+            'infousuario'  => $infouser,
         ];
         return $detalle;
     }
@@ -334,6 +339,18 @@ class adminController extends Controller
             "estatus" => 'ok',
             "data"=> $infouser,
             "user"=> $user
+        ]);
+    }
+    public function eliminarPaciente(Request $request)
+    {
+        # code...
+        $infopaciente = modelosLab\Pacientes::find($request->id);
+        $infopaciente->deleted_at = Carbon::now();
+        $infopaciente->save(); 
+
+        # code...
+        return json_encode([
+            "estatus" => 'ok'
         ]);
     }
     

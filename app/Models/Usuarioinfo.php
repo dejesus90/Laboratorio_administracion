@@ -12,4 +12,7 @@ class Usuarioinfo extends Model
 	// public function userlogin(){
     //     return $this->belongTo('App\Models\User' );
     // }
+	public function lab(){
+        return $this->hasOne(Laboratorio::class , 'id' , 'laboratorio__id');
+    }
 }

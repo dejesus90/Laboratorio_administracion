@@ -30,7 +30,7 @@
                     <td>{{ $paciente->telefono }}</td>
                     <td>{{ $paciente->cedula }}</td>
                     <td style="text-align:center">
-                        <button class="btn btn-outline-danger btn-sm">Eliminar</button>
+                        <button class="btn btn-outline-danger btn-sm btndelete" data-id="{{ $paciente->id }}">Eliminar</button>
                     </td>
                 </tr>
                 @endforeach
@@ -219,6 +219,38 @@ window.onload = function() {
             });
         }
     });
+    $('.btndelete').click(function(){
+        let idpaciente = $(this).attr('data-id');
+        console.log(idpaciente);
+        Swal.fire({
+            title: 'Eliminar',
+            text: "¿Seguro deseas eliminar El usuario?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, eliminar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    // la URL para la petición
+                    url : '/eliminarPaciente',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data : {id:idpaciente} ,
+                    type : 'POST',
+                    success : function(json) {
+                        console.log(json);
+                        // $("#btn-save").attr('disabled',false);
+                        // $("#modalagregar").modal('hide');
+                        location.reload();
+                    }
+                }); 
+            }
+        })
+    })
 
     function mensajealerta(texto,titulo,tipo) {
         Swal.fire({

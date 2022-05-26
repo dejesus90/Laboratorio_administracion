@@ -75,6 +75,7 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::post('/registrarUsuario', [adminController::class, 'registrarUsuario']);
     Route::post('/eliminarUsuario', [adminController::class, 'eliminarUsuario']);
+    Route::post('/eliminarPaciente', [adminController::class, 'eliminarPaciente']);
     
 });
 Route::group(['middleware' => 'paciente'], function () {

@@ -72,7 +72,22 @@
                         <img src="{{ asset('img/admin-avatar.png') }}" width="45px" />
                     </div>
                     <div class="admin-info">
-                        <div class="font-strong">{{Auth::user()->name}}</div><small>Administrator</small>
+                        <div class="font-strong">{{Auth::user()->name}}</div>
+                        <small>
+                        @switch($mueestrasresumen['infousuario']->tipousuario_id)
+                            @case(1)
+                                root
+                                @break
+                            @case(2)
+                                Administrador
+                                @break
+                            @case(3)
+                                Usuario
+                                @break
+                        @endswitch
+                        </small><br>
+                        <small>{{$mueestrasresumen['infousuario']->lab->nombre}}</small>
+                        
                     </div>
                 </div>
                 <ul class="side-menu metismenu">
