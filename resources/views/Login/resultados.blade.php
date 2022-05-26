@@ -20,9 +20,11 @@
 
                             <div class="col-md-6">
                                 <select id="tipoide" name="tipoide" class="form-control">
-                                    <option value="1" selected>RUT</option>
-                                    <option value="2" >Pasaporte</option>
-                                    <option value="3" >DNI</option>
+                                    <option value="1" selected>Cedula</option>
+                                    <option value="2" >NUIP</option>
+                                    <option value="3" >Tarjeta de Identidad</option>
+                                    <option value="4" >Pasaporte</option>
+                                    <option value="5" >PEP</option>
                                 </select>
                             </div>
                         </div>

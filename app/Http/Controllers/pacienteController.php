@@ -12,7 +12,7 @@ class pacienteController extends Controller
     
     public function buscarResultado(Request $request)
     {
-        // return $request;
+        //return $request;
         // $request->validate([
         //     'email' => 'required',
         //     'password' => 'required',
@@ -24,6 +24,7 @@ class pacienteController extends Controller
             ->where('muestras.codigo_muestra','=',$request->codigo)
             ->select('pacientes.id','pacientes.nombre1','pacientes.cedula','muestras.id as idmuestra','muestras.archivo_adjunto')
             ->get();
+
         if($pacientesLista){
             $path = storage_path().'\\'.'app'.'\\public\\resultados\\'.$pacientesLista[0]->archivo_adjunto;
             if (file_exists($path)) {

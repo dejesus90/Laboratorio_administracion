@@ -4,7 +4,7 @@
     <div class="ibox-head">
         <div class="ibox-title">Pacientes</div>
         <div class="btn-group">
-            <button class="btn btn-success" data-toggle="modal" data-target="#modalExamen">Agergar</button>
+            <button class="btn btn-success" data-toggle="modal" data-target="#modalExamen">Agregar</button>
 
         </div>
     </div>

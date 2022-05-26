@@ -112,14 +112,14 @@ window.onload = function() {
         console.log($(this).attr('data-id'));
         let estado = $(this).attr('data-estado');
         let item = $(this).attr('data-item');
-        if (estado == 1 && item == 3) {
+        if (estado == 1 && item == 3 || estado == 2 && item == 3) {
             idmuestra = $(this).attr('data-id');
             $('#modalresult').modal({
                 backdrop: 'static',
                 keyboard: false
             })
         }
-        if(estado == 1 && item == 2){
+        if(estado == 1 && item == 2 ){
             // cmbiamos a analisis
             $.ajax({
                 // la URL para la petición
