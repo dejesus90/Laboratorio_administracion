@@ -18,13 +18,14 @@ class adminController extends Controller
         $infouser = modelosLab\Usuarioinfo::where('id',Auth::user()->usuarioinfo_id)->first();
         
         $usuariosLab = modelosLab\Usuarioinfo::where([['laboratorio__id',$infouser->laboratorio__id],['tipousuario_id',3]])->get();
-        // dd($usuariosLab);
+        
         $detalle = $this->filtroEncabezado();
+        // dd($usuariosLab);
         return view('Laboratory.dashboard',['mueestrasresumen'=>$detalle,'usuariosLab'=>$usuariosLab]);
     }
     public function pacientes()
     {
-        # code...
+        # code... 
         //
         $infouser = modelosLab\Usuarioinfo::where('id',Auth::user()->usuarioinfo_id)->first();
         
@@ -177,6 +178,7 @@ class adminController extends Controller
         ->where([['laboratorio_id',$infouser->laboratorio__id],['estado_id',$filtro]])->get();
         $estados =  modelosLab\Estadomuestras::get();
         $detalle = $this->filtroEncabezado();
+        dd($infouser);
         return view('Laboratory.muestras',["muestras"=>$muestrasLab,"estados" => $estados,'mueestrasresumen'=>$detalle]);
     }
     public function registrarMuestra(Request $request)
