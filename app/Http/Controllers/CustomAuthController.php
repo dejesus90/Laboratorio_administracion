@@ -49,6 +49,7 @@ class CustomAuthController extends Controller
             'rut' => 'required',
             'documento_rut' => 'required|max:2048',
             'documento_comercio' => 'required|max:2048',
+            'logolab' => 'required|max:548',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
         ]);
@@ -58,6 +59,13 @@ class CustomAuthController extends Controller
 
         $fileName_comercio= time().'_'.$request->file('documento_comercio')->getClientOriginalName();
         $filePath_comercio= $request->file('documento_comercio')->storeAs('comercio', $fileName, 'public');
+
+        // $fileName_logo= time().'_'.$request->file('logolab')->getClientOriginalName();
+        // $filePath_logo= $request->file('logolab')->storeAs('logolab', $fileName_logo, 'public');
+
+        $ruta           = public_path("img/logos/");
+        $imagen         = $request->file('logolab');
+        $imagen->move($ruta,$fileName_logo);
 
         $data = $request->all();
         // resgistramos laboratorio
@@ -71,7 +79,8 @@ class CustomAuthController extends Controller
             'estado_id' => $data['estado'],
             'zipcode' => $data['zipcode'],
             'file_rut' => $fileName,
-            'file_comercio' => $fileName_comercio
+            'file_comercio' => $fileName_comercio,
+            'logotipo' => $fileName_logo
         ]);
         // registramos data users
         $datauser = modelosLab\Usuarioinfo::create([

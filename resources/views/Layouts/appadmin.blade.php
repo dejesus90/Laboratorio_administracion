@@ -69,7 +69,8 @@
             <div id="sidebar-collapse">
                 <div class="admin-block d-flex">
                     <div>
-                        <img src="{{ asset('img/admin-avatar.png') }}" width="45px" />
+                        <!-- <img src="{{ asset('img/admin-avatar.png') }}" width="45px" /> -->
+                        <img src="{{ asset('img/logos/'.$mueestrasresumen['infousuario']->lab->logotipo) }}" width="45px" heigth="45px">
                     </div>
                     <div class="admin-info">
                         <div class="font-strong">{{Auth::user()->name}}</div>

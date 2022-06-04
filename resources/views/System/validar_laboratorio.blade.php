@@ -127,6 +127,9 @@
                         <div class="ibox-title">Documentos Laboratorio</div>
                     </div>
                     <div class="ibox-body">
+                        <div>
+                        <img src="{{ asset('img/logos/'.$datalab->logotipo) }}" class="img img-thumbnail">
+                        </div>
                         <ul class="list-group list-group-full">
                             <li class="list-group-item active"> <a style="margin-left:10" class="btn btn-outline-primary" href="{{ url('download-file/1/'. $datalab->file_rut) }}" role="button"><i class="fa fa-download"></i> Documento RUT</a></li>
                             <li class="list-group-item active"> <a style="margin-left:10" class="btn btn-outline-primary" href="{{ url('download-file/2/'. $datalab->file_comercio) }}" role="button"><i class="fa fa-download"></i> Documento Camara Comercio</a></li>

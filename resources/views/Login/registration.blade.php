@@ -106,14 +106,15 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="form-group">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
-                                <label class="form-check-label" for="gridCheck">
-                                    Check me out
-                                </label>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="logolab" name="logolab" accept=".jpg"  required>
+                                    <label class="custom-file-label" for="validatedCustomFile" id="documento_logo_label" >Logo</label>
+                                    <div class="invalid-feedback">Example invalid custom file logo</div>
+                                </div>
                             </div>
-                        </div> -->
+                        </div>
                         <button type="submit" class="btn btn-primary float-right">Enviar Solicitud</button>
                     </form>
                 </div>
@@ -148,6 +149,9 @@
         });
         $('#documento_comercio').change(function() {
             $("#documento_camara_label").text(this.files[0].name);
+        });
+        $('#logolab').change(function() {
+            $("#documento_logo_label").text(this.files[0].name);
         });
     }
 </script>
